@@ -1,4 +1,7 @@
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
 import java.security.PublicKey;
+import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +18,7 @@ public class BitcoinNetwork {
 
     public BitcoinNetwork(){
         instance = this;
+        Security.addProvider(new BouncyCastleProvider());
 
         this.initMiners();
         this.doGenesisTransaction();
