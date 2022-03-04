@@ -18,7 +18,6 @@ public class BitcoinNetwork {
 
         this.initMiners();
         this.doGenesisTransaction();
-        this.isChainValid();
 
     }
 
@@ -50,19 +49,19 @@ public class BitcoinNetwork {
         return this.utx0Map;
     }
 
-    public void incrementTransactionSquence(){
+    public void incrementTransactionSequence(){
         this.transactionSequence++;
     }
 
-    public Integer getTransactionSquence(){
+    public Integer getTransactionSequence(){
         return this.transactionSequence;
     }
 
     private void addBlockToBlockchain(Block block){
         block.mineBlock(this.findFreeMiner(), Configuration.instance.difficultyLevel);
         this.blockchain.add(block);
-        Service.logNetworkMessage("Blockchain:");
-        Service.logNetworkMessage(Service.getJson(this.blockchain));
+        Service.logNetworkMessage("new Blockchain:" +"\n"+ Service.getJson(this.blockchain));
+        isChainValid();
     }
 
     private PublicKey findFreeMiner(){
@@ -74,7 +73,6 @@ public class BitcoinNetwork {
     public Double buyBitcoin(PublicKey buyer, Double amount){
         if(amount < miners.get("SatoshiNakamato").getBalance()){
             addTransactionToBlockchain(miners.get("SatoshiNakamato").sendFunds(buyer, amount));
-            Service.logNetworkMessage(amount + "Bitcoin bought by" + buyer.toString());
             return amount;
         }
         return null;
@@ -85,6 +83,7 @@ public class BitcoinNetwork {
         block.addTransaction(transaction);
         Service.logNetworkMessage("New Transaction");
         this.addBlockToBlockchain(block);
+        Service.logNetworkMessage(transaction.getValue() + " Bitcoin send by \n" + transaction.getSender().toString() +" to\n" + transaction.getRecipient().toString());
     }
 
     private void isChainValid() {
@@ -123,7 +122,7 @@ public class BitcoinNetwork {
                 }
 
                 if (currentTransaction.getInputsValue() != currentTransaction.getOutputsValue()) {
-                    Service.logNetworkMessage("#Inputs are not equal to oututs on Transaction(" + t + ")");
+                    Service.logNetworkMessage("#Inputs are not equal to outputs on Transaction(" + t + ")");
                     return;
                 }
 

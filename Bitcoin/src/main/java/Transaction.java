@@ -19,9 +19,9 @@ public class Transaction {
     }
 
     private String calculateHash() {
-        BitcoinNetwork.getInstance().incrementTransactionSquence();
+        BitcoinNetwork.getInstance().incrementTransactionSequence();
         return Service.applySha256(Service.getStringFromKey(sender) + Service.getStringFromKey(recipient)
-                + value + BitcoinNetwork.getInstance().getTransactionSquence());
+                + value + BitcoinNetwork.getInstance().getTransactionSequence());
     }
 
     public void generateSignature(PrivateKey privateKey) {
