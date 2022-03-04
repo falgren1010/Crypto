@@ -44,7 +44,7 @@ public class Block {
 
         TransactionOutput output = new TransactionOutput(miner, Configuration.instance.miningReward, "Mining Reward | " + merkleRoot + " | " + previousHash);
         BitcoinNetwork.getInstance().getUtx0Map().put(output.getID(), output);
-        Service.logNetworkMessage("block mined | Hash: " + hash + "| Miner: " + Service.getStringFromKey(miner));
+        Service.logNetworkMessage("| block mined |" + "\n\t" + " | Hash: " + hash + " |" + "\n\t" +  "| Miner: " + Service.getStringFromKey(miner)+ " |");
     }
 
     public void addTransaction(Transaction transaction) {
@@ -60,6 +60,5 @@ public class Block {
         }
 
         transactions.add(transaction);
-        Service.logNetworkMessage("transaction added to block");
     }
 }

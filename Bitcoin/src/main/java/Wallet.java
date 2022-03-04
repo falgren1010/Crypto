@@ -1,3 +1,4 @@
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class Wallet {
     }
 
     public void generateKeyPair() {
+        Security.addProvider(new BouncyCastleProvider());
         try {
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance("ECDSA", "BC");
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
@@ -68,7 +70,7 @@ public class Wallet {
         for (TransactionInput input : inputs) {
             utx0Map.remove(input.getId());
         }
-
+        Service.logNetworkMessage("Transferring " + value + " BTC");
         return transaction;
     }
 

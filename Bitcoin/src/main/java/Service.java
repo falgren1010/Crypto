@@ -96,8 +96,8 @@ public class Service {
         String timestamp = df.format(date);
         try {
             FileWriter fw = new FileWriter("transactionLog.txt", true);
-            fw.write(timestamp);
-            fw.write(msg);
+            fw.write(timestamp + "\n");
+            fw.write("\t"+ msg + "\n");
             fw.close();
         } catch (IOException e) {
             e.printStackTrace();
