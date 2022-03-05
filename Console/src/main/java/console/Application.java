@@ -1,14 +1,16 @@
-package console;
-
-import report.Reader;
-
-import java.io.File;
+package Console;
 
 public class Application {
-    public static void main(String[] args){
-        Reader reader=new Reader();
-        File folder=new File("data");
-        String path=folder.getAbsolutePath();
-        reader.encryptFile(folder);
+
+    public static void main(String[] args) throws Exception {
+        Commands commands=new Commands();
+        System.out.println("Welcome\n \nPlease enter:\n \nlaunch http://www.trust-me.mcg/report.jar\n \nto start");
+        while (Commands.getRunning()){
+            commands.listen();
+        }
+
+        //crypt.init();
+        //crypt.end();
+        //crypt.delete();
     }
 }
