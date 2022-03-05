@@ -19,4 +19,5 @@ public class Bank {
             money=money-0.01;
         }
     }
+    public double getMoney(){return money;}
 }

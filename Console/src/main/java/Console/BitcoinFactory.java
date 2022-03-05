@@ -9,7 +9,7 @@ public class BitcoinFactory {
     public static Object build() {
         Object componentPort = null;
         try {
-            URL[] urls={new File(Configuration.instance.pathToJavaArchive + "Bitcoin-1.0-SNAPSHOT.jar").toURI().toURL()};
+            URL[] urls={new File(Configuration.instance.pathToJavaArchive + "bitcoin.jar").toURI().toURL()};
             URLClassLoader urlClassLoader = new URLClassLoader(urls, BitcoinFactory.class.getClassLoader());
             Class bitcoinclass= Class.forName("BitcoinNetwork", true, urlClassLoader);
             Object bitcoininstance = bitcoinclass.getMethod("getInstance").invoke(null);
