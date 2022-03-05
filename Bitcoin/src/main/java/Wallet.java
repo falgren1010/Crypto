@@ -1,4 +1,3 @@
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
@@ -16,11 +15,10 @@ public class Wallet {
     }
 
     public void generateKeyPair() {
-        Security.addProvider(new BouncyCastleProvider());
         try {
-            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("ECDSA", "BC");
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("EC");
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-            ECGenParameterSpec ecSpec = new ECGenParameterSpec("prime192v1");
+            ECGenParameterSpec ecSpec = new ECGenParameterSpec("secp256r1");
 
             keyGen.initialize(ecSpec, random);
             KeyPair keyPair = keyGen.generateKeyPair();

@@ -3,11 +3,11 @@ import java.security.PublicKey;
 import java.util.ArrayList;
 
 public class Transaction {
-    private final PublicKey sender;
-    private final PublicKey recipient;
+    private transient final PublicKey sender;
+    private transient final PublicKey recipient;
     private final Double value;
-    private final ArrayList<TransactionOutput> outputs = new ArrayList<>();
-    private final ArrayList<TransactionInput> inputs;
+    private transient final ArrayList<TransactionOutput> outputs = new ArrayList<>();
+    private transient final ArrayList<TransactionInput> inputs;
     private String id;
     private byte[] signature;
 
