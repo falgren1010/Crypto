@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class Transaction {
     private transient final PublicKey sender;
     private transient final PublicKey recipient;
+    private final String senderPublicKey;
+    private final String recipientPublicKey;
     private final Double value;
     private transient final ArrayList<TransactionOutput> outputs = new ArrayList<>();
     private transient final ArrayList<TransactionInput> inputs;
@@ -16,6 +18,8 @@ public class Transaction {
         this.recipient = to;
         this.value = value;
         this.inputs = inputs;
+        this.senderPublicKey = from.toString().replaceAll("\\n",",");
+        this.recipientPublicKey = to.toString().replaceAll("\\n",",");
     }
 
     private String calculateHash() {
