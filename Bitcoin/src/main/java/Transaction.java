@@ -3,11 +3,13 @@ import java.security.PublicKey;
 import java.util.ArrayList;
 
 public class Transaction {
-    private final PublicKey sender;
-    private final PublicKey recipient;
+    private transient final PublicKey sender;
+    private transient final PublicKey recipient;
+    private final String senderPublicKey;
+    private final String recipientPublicKey;
     private final Double value;
-    private final ArrayList<TransactionOutput> outputs = new ArrayList<>();
-    private final ArrayList<TransactionInput> inputs;
+    private transient final ArrayList<TransactionOutput> outputs = new ArrayList<>();
+    private transient final ArrayList<TransactionInput> inputs;
     private String id;
     private byte[] signature;
 
@@ -16,12 +18,14 @@ public class Transaction {
         this.recipient = to;
         this.value = value;
         this.inputs = inputs;
+        this.senderPublicKey = from.toString().replaceAll("\\n",",");
+        this.recipientPublicKey = to.toString().replaceAll("\\n",",");
     }
 
     private String calculateHash() {
-        BitcoinNetwork.getInstance().incrementTransactionSquence();
+        BitcoinNetwork.getInstance().incrementTransactionSequence();
         return Service.applySha256(Service.getStringFromKey(sender) + Service.getStringFromKey(recipient)
-                + value + BitcoinNetwork.getInstance().getTransactionSquence());
+                + value + BitcoinNetwork.getInstance().getTransactionSequence());
     }
 
     public void generateSignature(PrivateKey privateKey) {

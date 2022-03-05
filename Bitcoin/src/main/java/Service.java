@@ -36,7 +36,7 @@ public class Service {
         byte[] output;
 
         try {
-            dsa = Signature.getInstance("ECDSA", "BC");
+            dsa = Signature.getInstance("SHA256withECDSA");
             dsa.initSign(privateKey);
             byte[] strByte = input.getBytes();
             dsa.update(strByte);
@@ -50,7 +50,7 @@ public class Service {
 
     public static boolean verifyECDSASig(PublicKey publicKey, String data, byte[] signature) {
         try {
-            Signature ecdsaVerify = Signature.getInstance("ECDSA", "BC");
+            Signature ecdsaVerify = Signature.getInstance("SHA256withECDSA");
             ecdsaVerify.initVerify(publicKey);
             ecdsaVerify.update(data.getBytes());
             return ecdsaVerify.verify(signature);
@@ -96,8 +96,8 @@ public class Service {
         String timestamp = df.format(date);
         try {
             FileWriter fw = new FileWriter("transactionLog.txt", true);
-            fw.write(timestamp);
-            fw.write(msg);
+            fw.write(timestamp + "\n");
+            fw.write("\t"+ msg + "\n");
             fw.close();
         } catch (IOException e) {
             e.printStackTrace();

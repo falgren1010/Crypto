@@ -4,12 +4,15 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Block {
-    private final String previousHash;
-    private final long timeStamp;
-    private final ArrayList<Transaction> transactions = new ArrayList<>();
-    private String merkleRoot;
-    private String hash;
-    private int nonce;
+
+    //Attribute würden im Normalfall private sein, Gson kann jedoch keine privaten
+    //Attribute in json loggen, weshalb sie hier auf public gesetzt sind.
+    public final String previousHash;
+    public final long timeStamp;
+    public final ArrayList<Transaction> transactions = new ArrayList<>();
+    public String merkleRoot;
+    public String hash;
+    public int nonce;
 
     public Block(String previousHash) {
         this.previousHash = previousHash;
@@ -44,7 +47,7 @@ public class Block {
 
         TransactionOutput output = new TransactionOutput(miner, Configuration.instance.miningReward, "Mining Reward | " + merkleRoot + " | " + previousHash);
         BitcoinNetwork.getInstance().getUtx0Map().put(output.getID(), output);
-        Service.logNetworkMessage("block mined | Hash: " + hash + "| Miner: " + Service.getStringFromKey(miner));
+        Service.logNetworkMessage("| block mined |" + "\n\t" + " | Hash: " + hash + " |" + "\n\t" +  "| Miner: " + Service.getStringFromKey(miner)+ " |");
     }
 
     public void addTransaction(Transaction transaction) {
@@ -60,6 +63,5 @@ public class Block {
         }
 
         transactions.add(transaction);
-        Service.logNetworkMessage("transaction added to block");
     }
 }
