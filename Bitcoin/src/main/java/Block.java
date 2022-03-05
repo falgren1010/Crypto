@@ -4,12 +4,15 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Block {
-    private final String previousHash;
-    private final long timeStamp;
-    private final ArrayList<Transaction> transactions = new ArrayList<>();
-    private String merkleRoot;
-    private String hash;
-    private int nonce;
+
+    //Attribute würden im Normalfall private sein, Gson kann jedoch keine privaten
+    //Attribute in json loggen, weshalb sie hier auf public gesetzt sind.
+    public final String previousHash;
+    public final long timeStamp;
+    public final ArrayList<Transaction> transactions = new ArrayList<>();
+    public String merkleRoot;
+    public String hash;
+    public int nonce;
 
     public Block(String previousHash) {
         this.previousHash = previousHash;
