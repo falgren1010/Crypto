@@ -99,7 +99,7 @@
 05-03-2022 at 18:09:16 MEZ
 	Transferring 0.5 BTC
 05-03-2022 at 18:09:16 MEZ
-	New Transaction
+	New Bitcoin.Transaction
 05-03-2022 at 18:09:16 MEZ
 	| block mined |
 	 | Hash: 0002ef5c9f7d66524e7787c00aaddb15ab142b24f1025cd475f06313fd895236 |
@@ -300,7 +300,7 @@ Sun EC public key, 256 bits
 05-03-2022 at 18:09:16 MEZ
 	Transferring 0.25 BTC
 05-03-2022 at 18:09:16 MEZ
-	New Transaction
+	New Bitcoin.Transaction
 05-03-2022 at 18:09:16 MEZ
 	| block mined |
 	 | Hash: 0009b6751a2f64da33072221ad6c8414deb5b086a040f4c782a02587321de02f |
