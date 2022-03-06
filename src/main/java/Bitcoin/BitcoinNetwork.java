@@ -14,10 +14,12 @@ public class BitcoinNetwork {
     private final List<Block> blockchain = new ArrayList<>();
     private Transaction genesisTransaction;
     private Integer transactionSequence = 0;
+    private Boolean validBlockchain;
 
     public BitcoinNetwork(){
         instance = this;
 
+        this.validBlockchain = false;
         this.initMiners();
         this.doGenesisTransaction();
 
@@ -84,6 +86,10 @@ public class BitcoinNetwork {
         return new Wallet();
     }
 
+    public Boolean validateBlockchain(){
+        return this.validBlockchain;
+    }
+
     public void addTransactionToBlockchain(Transaction transaction){
         Block block = new Block(this.blockchain.get(this.blockchain.size() - 1).getHash());
         block.addTransaction(transaction);
@@ -105,16 +111,19 @@ public class BitcoinNetwork {
 
             if (!currentBlock.getHash().equals(currentBlock.calculateHash())) {
                 Service.logNetworkMessage("#current hashes not equal");
+                this.validBlockchain = false;
                 return;
             }
 
             if (!previousBlock.getHash().equals(currentBlock.getPreviousHash())) {
                 Service.logNetworkMessage("#trevious hashes not equal");
+                this.validBlockchain = false;
                 return;
             }
 
             if (!currentBlock.getHash().substring(0, Configuration.instance.difficultyLevel).equals(hashTarget)) {
                 Service.logNetworkMessage("#block not mined");
+                this.validBlockchain = false;
                 return;
             }
 
@@ -124,11 +133,13 @@ public class BitcoinNetwork {
 
                 if (currentTransaction.verifySignature()) {
                     Service.logNetworkMessage("#Signature on Bitcoin.Transaction(" + t + ") is Invalid");
+                    this.validBlockchain = false;
                     return;
                 }
 
                 if (currentTransaction.getInputsValue() != currentTransaction.getOutputsValue()) {
                     Service.logNetworkMessage("#Inputs are not equal to outputs on Bitcoin.Transaction(" + t + ")");
+                    this.validBlockchain = false;
                     return;
                 }
 
@@ -137,11 +148,13 @@ public class BitcoinNetwork {
 
                     if (tempOutput == null) {
                         Service.logNetworkMessage("#referenced input on transaction(" + t + ") is missing");
+                        this.validBlockchain = false;
                         return;
                     }
 
                     if (input.getUTX0().getValue() != tempOutput.getValue()) {
                         Service.logNetworkMessage("#referenced input on transaction(" + t + ") value invalid");
+                        this.validBlockchain = false;
                         return;
                     }
 
@@ -154,16 +167,19 @@ public class BitcoinNetwork {
 
                 if (currentTransaction.getOutputs().get(0).getRecipient() != currentTransaction.getRecipient()) {
                     Service.logNetworkMessage("#transaction(" + t + ") output recipient is invalid");
+                    this.validBlockchain = false;
                     return;
                 }
 
                 if (currentTransaction.getOutputs().get(1).getRecipient() != currentTransaction.getSender()) {
                     Service.logNetworkMessage("#transaction(" + t + ") output 'change' is not sender");
+                    this.validBlockchain = false;
                     return;
                 }
             }
         }
         Service.logNetworkMessage("blockchain valid");
+        this.validBlockchain = true;
     }
 
 }
