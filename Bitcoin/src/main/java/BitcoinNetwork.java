@@ -78,6 +78,10 @@ public class BitcoinNetwork {
         return null;
     }
 
+    public Wallet createWallet(){
+        return new Wallet();
+    }
+
     public void addTransactionToBlockchain(Transaction transaction){
         Block block = new Block(this.blockchain.get(this.blockchain.size() - 1).getHash());
         block.addTransaction(transaction);
