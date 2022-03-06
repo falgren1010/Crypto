@@ -1,5 +1,6 @@
 package Console.Console;
 
+import Bitcoin.BitcoinNetwork;
 import Bitcoin.Wallet;
 
 import java.io.BufferedReader;
@@ -12,15 +13,15 @@ import java.util.TimerTask;
 public class Commands {
     private static boolean running=true;
     private Object reportPort;
-    private Object bitcoinPort;
     private Bank bank=new Bank();
     private boolean state=false;
     public Commands() throws NoSuchMethodException {
         reportPort= Reportfactory.build();
-        bitcoinPort= BitcoinFactory.build();
     }
     Commands commands=new Commands();
     private Wallet wallet=new Wallet();
+    private Wallet ed=new Wallet();
+    private BitcoinNetwork bitcoinNetwork=new BitcoinNetwork();
     private double amounttopay=0.02755;
     private double amountpaid=0;
     private int time=0;
@@ -44,25 +45,24 @@ public class Commands {
             if(result[0].equals("exchange")){
                 double coins=Double.parseDouble(result[1]);
                 bank.pay(coins);
-                Method buyBltcoin=bitcoinPort.getClass().getDeclaredMethod("buyBitcoin", wallet.getPublicKey(), double.class);
-                buyBltcoin.invoke(bitcoinPort, coins);
-                //Coins dem Wallet hinzufügen
+                bitcoinNetwork.buyBitcoin(wallet.getPublicKey(),coins);
             }
             if(input.equals("show balance")){
-                String amount= wallet.getBalance();
+                String amount= String.valueOf(wallet.getBalance());
                 System.out.println(amount+" BTC");
                 amount = String.valueOf(bank.getMoney());
                 System.out.println(amount+ " €");
             }
             if(input.equals("show recipient")){
-                //String amount=getRecipient
+                System.out.println(ed.getPublicKey());
             }
             if(result[0].equals("pay")){
                 double coins=Double.parseDouble((result[1]));
-                wallet.sendFunds(result[3], coins);
-                amountpaid=coins;
+                bitcoinNetwork.addTransactionToBlockchain(wallet.sendFunds(ed.getPublicKey(), coins));
+                amounttopay=amounttopay-coins;
             }
             if(result[0].equals("check")){
+                bitcoinNetwork.validateBlockchain()
                 //prüfe ob valide
                 //if(//prüfe ob valide==true&&amounttopay==amountpaid){Method end=reportPort.getClass().getDeclaredMethod("end"); end.invoke(reportPort);
                 //running=!running;
