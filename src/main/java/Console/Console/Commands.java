@@ -23,7 +23,6 @@ public class Commands {
     private Wallet ed=new Wallet();
     private BitcoinNetwork bitcoinNetwork=new BitcoinNetwork();
     private double amounttopay=0.02755;
-    private double amountpaid=0;
     private int time=0;
 
     public static boolean getRunning(){return running;}
@@ -62,12 +61,19 @@ public class Commands {
                 amounttopay=amounttopay-coins;
             }
             if(result[0].equals("check")){
-                bitcoinNetwork.validateBlockchain()
-                //prüfe ob valide
-                //if(//prüfe ob valide==true&&amounttopay==amountpaid){Method end=reportPort.getClass().getDeclaredMethod("end"); end.invoke(reportPort);
-                //running=!running;
-                //state=false;
-                // }
+                Method end=reportPort.getClass().getDeclaredMethod("end");
+                if(bitcoinNetwork.validateBlockchain()){
+                    System.out.println("Transaction successfull");
+                    if(amounttopay==0){
+                        end.invoke(reportPort);
+                        running=!running;
+                        state=false;
+                        timer.cancel();
+                    }
+                    else {
+                        System.out.println("Not enough Bitcoin paid");
+                    }
+                }
             }
             timer.schedule(new TimerTask() {
                 @Override
